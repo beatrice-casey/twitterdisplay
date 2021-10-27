@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Greeting
+from .models import Greeting, Tweet, User
 
 # Create your views here.
 def index(request):
-    # return HttpResponse('Hello from Python!')
-    return render(request, "index.html")
+    # create to store database contents
+    context = {}
+
+    # select from SQLite
+    context["dataset"] = Tweet.objects.all()
+   
+    return render(request, "index.html", context)
 
 
 def db(request):
