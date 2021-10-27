@@ -86,7 +86,8 @@ def run():
                     # account = username of the account
                     # html = the html to embed the Tweet
                     time_created_at = status._json['created_at']
-                    #print(html)
+                    print(html)
+                    print("\n\n")
                 else:
                     print("Not able to get Tweet for "+account)
         except:
