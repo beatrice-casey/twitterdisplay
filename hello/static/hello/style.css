@@ -1,0 +1,21 @@
+li a {
+    color:orange;
+}
+h1 banner {
+    border: 1cm;
+    font-family: Cambria;
+
+}
+
+.topnav {
+    background-color:orange;
+    z-index: 1;
+    text-align: center;
+    overflow: hidden;
+    color: blue;
+    border: 1cm;
+    border-radius: .25cm;
+    height: 2cm;
+    font-family: 'Franklin Gothic Medium', 'Arial', Arial, sans-serif
+}
+
