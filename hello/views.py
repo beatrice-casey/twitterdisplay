@@ -129,7 +129,7 @@ def generateDate(status):
         month = 7
     elif month == "Aug":
         month = 8
-    elif month == "Sept":
+    elif month == "Sep":
         month = 9
     elif month == "Oct":
         month = 10
