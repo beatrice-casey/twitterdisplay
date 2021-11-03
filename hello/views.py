@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 
-from .models import Greeting, Tweet
-
+#.models import Greeting, Tweet
+import Greeting, Tweet
 # Create your views here.
 
 def index(request):
@@ -95,7 +95,7 @@ def run():
                         hashtags.append(entry['text'])
                     # print(hashtags)
 
-                    # print(html)
+                    print(html)
                 else:
                     print("Not able to get Tweet for " + account)
         except:
@@ -133,3 +133,4 @@ def generateDate(status):
         month = 12
     date = day + "/" + str(month) + "/" + year
     return date    
+run()
