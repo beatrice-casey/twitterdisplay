@@ -32,28 +32,26 @@ def index(request):
 
 
 def build_account_list():
-    # comment
     account_list = []
-    # # extract users from txt file
-    with open("accounts.csv",'r') as csv_file:
+    # extract users from txt file
+    with open("accounts.csv", 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             if line_count == 0:
+                line_count += 1
                 continue
             else:
-                account_list.append((row[0],row[1]))
-                #print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
+                account_list.append((row[0], row[1]))
+                # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
                 line_count += 1
-    
-
-
 
     return account_list
 
+
 # Makes a request to get the html for a given Tweet URL
 def generate_html(url):
-    query_string = urlencode({'url': url}) # 'omit_script': 1
+    query_string = urlencode({'url': url})  # 'omit_script': 1
     oembed_url = f"https://publish.twitter.com/oembed?{query_string}"
 
     r = requests.get(oembed_url)
@@ -63,49 +61,65 @@ def generate_html(url):
         return result['html'].strip()
     return ""
 
+
 def run():
     # build the list of users to extract
     account_list = build_account_list()
-
-    users = []
-    htmls =[]
     dates = []
+    users = []
+    htmls = []
 
+    prev_date = datetime.datetime.now() - datetime.timedelta(days=1)
 
     # go through each user
     for account_entry in account_list:
+
         try:
             account = account_entry[0]
-            isHashtagOnly = account[1] == 1
-            #print("Getting data for " + account)
-            # get the tweetss
-            statuses = api.user_timeline(screen_name=account, count=TWEETS_PER_USER, trim_user=True, exclude_replies=True)
-            # loop through the tweets
-            for status in statuses:
+            isHashtagOnly = int(account_entry[1]) == 1
+            print("Getting data for " + account)
+            # get the tweets
+            tweets = api.user_timeline(screen_name=account, trim_user=True,
+                                       exclude_replies=True, )
+
+            for tweet in tweets:
+                # print(tweet._json['created_at'])
+                d = tweet._json['created_at'].split(' ')
+                tweet_date = datetime.datetime(year=int(d[-1]), month=int(get_month(d[1])),
+                                               day=int(d[2]))  # Time, without a date
+
+                # keep looping until encounter tweet with date past 1 day ago (since last update)
+                if tweet_date < prev_date:
+                    break
+
                 # obtain the tweet url from the json request
-                url = "https://twitter.com/" + account + "/status/" + status._json['id_str']
+                url = "https://twitter.com/" + account + "/status/" + tweet._json['id_str']
                 html = generate_html(url)
+
                 if html != "":
                     # Working with hashtags
                     hashtags = []
-                    for entry in status._json['entities']['hashtags']:
+                    for entry in tweet._json['entities']['hashtags']:
                         hashtags.append(entry['text'])
 
                     # Put in DB
-                    if(not isHashtagOnly or HASHTAG in hashtags):
+                    if not isHashtagOnly or HASHTAG in hashtags:
                         # time_created_at = time the Tweet was made
                         # account = username of the account
                         # html = the html to embed the Tweet
-                        date = generateDate(status)
-                        users.append(account)
-                        htmls.append(html)
+                        date = generateDate(tweet)
                         dates.append(date)
+                        htmls.append(html)
+                        users.append(account)
+                        # print(tweet)
+                        # print(tweet._json['created_at'])
+                        # print("----------------------------------")
+
                 else:
                     print("Not able to get Tweet for " + account)
         except:
             continue
-
-    return users,htmls,dates
+    return users, htmls, dates
 
 
 def generateDate(status):
@@ -113,6 +127,12 @@ def generateDate(status):
     month = time_created_at[1]
     day = time_created_at[2]
     year = time_created_at[-1]
+    month = get_month(month)
+    date = day + "/" + str(month) + "/" + year
+    return date
+
+
+def get_month(month):
     if month == "Jan":
         month = 1
     elif month == "Feb":
@@ -129,7 +149,7 @@ def generateDate(status):
         month = 7
     elif month == "Aug":
         month = 8
-    elif month == "Sep":
+    elif month == "Sept":
         month = 9
     elif month == "Oct":
         month = 10
@@ -137,8 +157,7 @@ def generateDate(status):
         month = 11
     elif month == "Dec":
         month = 12
-    date = day + "/" + str(month) + "/" + year
-    return date
+    return month
 
 
             
