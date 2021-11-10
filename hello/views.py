@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
+import schedule
+import time
 
 # CONSTANTS
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAEPxTgEAAAAAqnem0D0Cf8c1zRJ1AgKrN6wiHRI%3DfHNJuInuMppQGzaicMdr4ds7hfOlHNySVwrdrNRvECFMm6bFE1'
@@ -160,7 +162,8 @@ def get_month(month):
     return month
 
 
-            
+
 
 # for testing purposes (to run just the single file)
+schedule.every().day.at("05:00").do(run)
 run()
