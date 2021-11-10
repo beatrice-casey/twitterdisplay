@@ -8,6 +8,8 @@ from django.shortcuts import render
 from tweepy import API, OAuthHandler
 import schedule
 import time
+import csv
+import datetime
 
 # CONSTANTS
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAEPxTgEAAAAAqnem0D0Cf8c1zRJ1AgKrN6wiHRI%3DfHNJuInuMppQGzaicMdr4ds7hfOlHNySVwrdrNRvECFMm6bFE1'
@@ -36,7 +38,7 @@ def index(request):
 def build_account_list():
     account_list = []
     # extract users from txt file
-    with open("accounts.csv", 'r') as csv_file:
+    with open("./hello/accounts.csv", 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -165,5 +167,9 @@ def get_month(month):
 
 
 # for testing purposes (to run just the single file)
-schedule.every().day.at("05:00").do(run)
 run()
+schedule.every().day.at("05:00").do(run)
+while True:
+   schedule.run_pending()
+   time.sleep(1)
+   
