@@ -7,6 +7,8 @@ from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
 
+
+
 # CONSTANTS
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAEPxTgEAAAAAqnem0D0Cf8c1zRJ1AgKrN6wiHRI%3DfHNJuInuMppQGzaicMdr4ds7hfOlHNySVwrdrNRvECFMm6bFE1'
 CONSUMER_KEY = "dFGI5f6OBN0QfprVQZmBhA40r"
@@ -24,10 +26,9 @@ auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
-
-
 def index(request):
     # return HttpResponse('Hello from Python!')
+
     return render(request, "index.html")
 
 
@@ -45,6 +46,7 @@ def build_account_list():
                 account_list.append((row[0], row[1]))
                 # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
                 line_count += 1
+
 
     return account_list
 
@@ -160,7 +162,6 @@ def get_month(month):
     return month
 
 
-            
 
 # for testing purposes (to run just the single file)
-run()
+# run()
