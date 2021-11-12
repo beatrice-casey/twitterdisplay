@@ -168,8 +168,4 @@ def get_month(month):
 
 # for testing purposes (to run just the single file)
 run()
-schedule.every().day.at("05:00").do(run)
-while True:
-   schedule.run_pending()
-   time.sleep(1)
    
