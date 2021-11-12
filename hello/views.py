@@ -6,6 +6,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
+import schedule
+import time
+import csv
+import datetime
 
 
 
@@ -35,7 +39,7 @@ def index(request):
 def build_account_list():
     account_list = []
     # extract users from txt file
-    with open("accounts.csv", 'r') as csv_file:
+    with open("./hello/accounts.csv", 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -162,6 +166,3 @@ def get_month(month):
     return month
 
 
-
-# for testing purposes (to run just the single file)
-# run()
