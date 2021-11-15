@@ -77,7 +77,7 @@ WSGI_APPLICATION = "twitterdisplayapp.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgresql-slippery-83591',
+        'NAME': 'ddtqls08im6ebr',
         'USER': 'hrkyzevdhovtsu',
         'PASSWORD': '3a05d690de5bdcf66b0580f305a103b059ff4f5544fcde88aa193f496db11421',
         'HOST': 'ec2-3-226-165-74.compute-1.amazonaws.com',
