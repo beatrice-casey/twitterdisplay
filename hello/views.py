@@ -42,7 +42,7 @@ def index(request):
 def start_pgsql():
     
     enginge =  'django.db.backends.postgresql_psycopg2'
-    name = 'postgresql-slippery-83591'
+    name = 'ddtqls08im6ebr'
     user = 'hrkyzevdhovtsu'
     password = '3a05d690de5bdcf66b0580f305a103b059ff4f5544fcde88aa193f496db11421'
     host = 'ec2-3-226-165-74.compute-1.amazonaws.com'
