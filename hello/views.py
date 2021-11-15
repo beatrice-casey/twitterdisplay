@@ -38,7 +38,7 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     cursor = None
     if cursor == None:
-        cursor = start_pgsql()
+        cursor, conn = start_pgsql()
     
     add_to_db(cursor, conn)
     html = get_from_db(cursor)
@@ -63,7 +63,7 @@ def start_pgsql():
             )
     
     cursor = conn.cursor()
-    return cursor
+    return cursor, conn
 
 def add_to_db(cursor, conn):
     num = 1
