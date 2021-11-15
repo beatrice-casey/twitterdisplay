@@ -10,6 +10,8 @@ import schedule
 import time
 import csv
 import datetime
+import psycopg2
+import os
 
 
 
@@ -33,7 +35,29 @@ api = tweepy.API(auth)
 def index(request):
     # return HttpResponse('Hello from Python!')
 
+    start_pgsql()
+
     return render(request, "index.html")
+
+def start_pgsql():
+    
+    enginge =  'django.db.backends.postgresql_psycopg2'
+    name = 'postgresql-slippery-83591'
+    user = 'hrkyzevdhovtsu'
+    password = '3a05d690de5bdcf66b0580f305a103b059ff4f5544fcde88aa193f496db11421'
+    host = 'ec2-3-226-165-74.compute-1.amazonaws.com'
+    port = 5432
+
+    conn = psycopg2.connect(
+            dbname=name,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+            )
+    
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM hello_tweet')
 
 
 def build_account_list():
