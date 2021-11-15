@@ -61,13 +61,12 @@ function resumeDiv() {
 </div>
 
 <div id="twit">
-  {% for data in dataset %}
+  
   {% autoescape off %} 
-  {{data.html}}
+  {{data}}
   {% endautoescape %}
 
 
-  {% endfor %}
 
 </div>
 </body>
