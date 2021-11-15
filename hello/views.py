@@ -72,7 +72,8 @@ def add_to_db(cursor, conn):
     cursor.execute("INSERT INTO hello_tweet (num, html) VALUES(%s, %s)", (num, html))
     
     conn.commit()
-    cursor.fetchall()
+    
+    #cursor.fetchall()
 
 def get_from_db(cursor):
     cursor.execute(f'SELECT * from hello_tweet')
