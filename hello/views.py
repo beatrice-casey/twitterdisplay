@@ -36,12 +36,12 @@ cursor = None
 
 def index(request):
     # return HttpResponse('Hello from Python!')
-
+    cursor = None
     if cursor == None:
         cursor = start_pgsql()
     
-    add_to_db()
-    html = get_from_db()
+    add_to_db(cursor, conn)
+    html = get_from_db(cursor)
 
     return render(request, "index.html", html)
 
@@ -65,13 +65,14 @@ def start_pgsql():
     cursor = conn.cursor()
     return cursor
 
-def add_to_db():
+def add_to_db(cursor, conn):
     num = 1
     html = '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Sunsets don&#39;t get much better than this one over <a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>. <a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a> <a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a> <a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a></p>&mdash; US Department of the Interior (@Interior) <a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
     cursor.execute(f'INSERT INTO hello_tweet ({num}, {html})')
     cursor.fetchall()
+    conn.commit()
 
-def get_from_db():
+def get_from_db(cursor):
     cursor.execute(f'SELECT * from hello_tweet')
     data = cursor.fetchall()
 
