@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
+from hello.models import Tweet
 import schedule
 import time
 import csv
@@ -41,9 +42,14 @@ def index(request):
         cursor, conn = start_pgsql()
     
     add_to_db(cursor, conn)
-    html = get_from_db(cursor)
 
-    return render(request, "index.html", html)
+    # get data from pgsql
+    tweets = Tweet.objects
+
+    #html = get_from_db(cursor)
+    # TODO HAS to be a dictionary
+
+    return render(request, "index.html", {'tweets': tweets})
 
 def start_pgsql():
     
@@ -66,13 +72,13 @@ def start_pgsql():
     return cursor, conn
 
 def add_to_db(cursor, conn):
-    num = 1
-    html = '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Sunsets don&#39;t get much better than this one over <a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>. <a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a> <a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a> <a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a></p>&mdash; US Department of the Interior (@Interior) <a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+    num = 2
+    html = '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Scientists have built deep neural networks that can map between infinite dimensional spaces. <a href="https://t.co/LUwfLvhEhm">https://t.co/LUwfLvhEhm</a> <a href="https://t.co/wOHgdJnWsk">pic.twitter.com/wOHgdJnWsk</a></p>&mdash; Quanta Magazine (@QuantaMagazine) <a href="https://twitter.com/QuantaMagazine/status/1460379347320197123?ref_src=twsrc%5Etfw">November 15, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
     #cursor.execute(f"INSERT INTO hello_tweet ({num}, '{html}')")
     cursor.execute("INSERT INTO hello_tweet (num, html) VALUES(%s, %s)", (num, html))
     
     conn.commit()
-    
+
     #cursor.fetchall()
 
 def get_from_db(cursor):
