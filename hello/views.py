@@ -44,7 +44,7 @@ def index(request):
     add_to_db(cursor, conn)
 
     # get data from pgsql
-    tweets = Tweet.objects
+    tweets = Tweet.objects.all()
 
     #html = get_from_db(cursor)
     # TODO HAS to be a dictionary
