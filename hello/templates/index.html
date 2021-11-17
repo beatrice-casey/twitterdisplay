@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 {% load static %}
-
 
 <link rel="stylesheet" type="text/css" href="{% static 'hello/style.css' %}">
 <script src="{% static 'hello/hello.js' %}"></script>
@@ -13,8 +10,6 @@
 window.onload = function() {
   scrollDiv_init();
 };
-
-
 ScrollRate = 100;
 function scrollDiv_init() {
   DivElmnt = document.getElementById('MyDivName');
@@ -24,9 +19,7 @@ function scrollDiv_init() {
   DivElmnt.scrollTop = 0;
   PreviousScrollTop  = 0;
   ScrollInterval = setInterval('scrollDiv()', ScrollRate);
-  
 }
-
 function scrollDiv() {
   if (!ReachedMaxScroll) {
     DivElmnt.scrollTop = PreviousScrollTop;
@@ -41,10 +34,8 @@ function scrollDiv() {
     ReachedMaxScroll = (DivElmnt.scrollTop == 0)?false:true;
     DivElmnt.scrollTop = PreviousScrollTop;
     PreviousScrollTop--;
-
   }
 }
-
 function pauseDiv() {
   clearInterval(ScrollInterval);
 }
@@ -52,12 +43,8 @@ function resumeDiv() {
   PreviousScrollTop = DivElmnt.scrollTop;
   ScrollInterval = setInterval('scrollDiv()', ScrollRate);
 }
-
 </script>
 </head>
-
-
-
 <body onload="scrollDiv_init()">
 
 
@@ -65,34 +52,20 @@ function resumeDiv() {
 <h1 class="topnav", style="color:#003865"> What's Twitter saying about Bucknell Computer Science? </h1>
 
 
-
 <div class="noscroll"id="MyDivName" style="overflow:auto;width:30%;height: 500px;float: left;" onMouseOut="resumeDiv()">
 
-  
-  <blockquote class="twitter-tweet"><p lang="en" dir="ltr">.<a href="https://twitter.com/UMassLowell?ref_src=twsrc%5Etfw">@UMassLowell</a>, <a href="https://twitter.com/GeorgiaTech?ref_src=twsrc%5Etfw">@GeorgiaTech</a>, <a href="https://twitter.com/CarnegieMellon?ref_src=twsrc%5Etfw">@CarnegieMellon</a>, <a href="https://twitter.com/OregonState?ref_src=twsrc%5Etfw">@OregonState</a>, and <a href="https://twitter.com/OHSUNews?ref_src=twsrc%5Etfw">@OHSUNews</a> researchers are part of an <a href="https://twitter.com/NSF?ref_src=twsrc%5Etfw">@NSF</a>-funded initiative to develop <a href="https://twitter.com/hashtag/robotics?src=hash&amp;ref_src=twsrc%5Etfw">#robotics</a> and <a href="https://twitter.com/hashtag/artificialintelligence?src=hash&amp;ref_src=twsrc%5Etfw">#artificialintelligence</a> systems to improve quality of life care for seniors. <a href="https://twitter.com/amazon?ref_src=twsrc%5Etfw">@Amazon</a>, <a href="https://twitter.com/Google?ref_src=twsrc%5Etfw">@Google</a> are sponsors. <a href="https://t.co/FQMFHDQuQZ">https://t.co/FQMFHDQuQZ</a> <a href="https://t.co/BKxD7jGUlm">pic.twitter.com/BKxD7jGUlm</a></p>&mdash; Communications of the ACM (@CACMmag) <a href="https://twitter.com/CACMmag/status/1451569337765085197?ref_src=twsrc%5Etfw">October 22, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <blockquote class="twitter-tweet"><p lang="en" dir="ltr">.<a href="https://twitter.com/UMassLowell?ref_src=twsrc%5Etfw">@UMassLowell</a>, <a href="https://twitter.com/GeorgiaTech?ref_src=twsrc%5Etfw">@GeorgiaTech</a>, <a href="https://twitter.com/CarnegieMellon?ref_src=twsrc%5Etfw">@CarnegieMellon</a>, <a href="https://twitter.com/OregonState?ref_src=twsrc%5Etfw">@OregonState</a>, and <a href="https://twitter.com/OHSUNews?ref_src=twsrc%5Etfw">@OHSUNews</a> researchers are part of an <a href="https://twitter.com/NSF?ref_src=twsrc%5Etfw">@NSF</a>-funded initiative to develop <a href="https://twitter.com/hashtag/robotics?src=hash&amp;ref_src=twsrc%5Etfw">#robotics</a> and <a href="https://twitter.com/hashtag/artificialintelligence?src=hash&amp;ref_src=twsrc%5Etfw">#artificialintelligence</a> systems to improve quality of life care for seniors. <a href="https://twitter.com/amazon?ref_src=twsrc%5Etfw">@Amazon</a>, <a href="https://twitter.com/Google?ref_src=twsrc%5Etfw">@Google</a> are sponsors. <a href="https://t.co/FQMFHDQuQZ">https://t.co/FQMFHDQuQZ</a> <a href="https://t.co/BKxD7jGUlm">pic.twitter.com/BKxD7jGUlm</a></p>&mdash; Communications of the ACM (@CACMmag) <a href="https://twitter.com/CACMmag/status/1451569337765085197?ref_src=twsrc%5Etfw">October 22, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% for tweet in tweets %}
+  {% autoescape off %} 
+  {{ tweet.html }}
+  {% endautoescape %}
+  {% endfor %}
+
 </div>
 
-<!--
-SECOND BODY
-<div id="MyDivName" style="overflow:auto;width:30%;height: 500px;float: left;" onMouseOut="resumeDiv()">
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">.<a href="https://twitter.com/UMassLowell?ref_src=twsrc%5Etfw">@UMassLowell</a>, <a href="https://twitter.com/GeorgiaTech?ref_src=twsrc%5Etfw">@GeorgiaTech</a>, <a href="https://twitter.com/CarnegieMellon?ref_src=twsrc%5Etfw">@CarnegieMellon</a>, <a href="https://twitter.com/OregonState?ref_src=twsrc%5Etfw">@OregonState</a>, and <a href="https://twitter.com/OHSUNews?ref_src=twsrc%5Etfw">@OHSUNews</a> researchers are part of an <a href="https://twitter.com/NSF?ref_src=twsrc%5Etfw">@NSF</a>-funded initiative to develop <a href="https://twitter.com/hashtag/robotics?src=hash&amp;ref_src=twsrc%5Etfw">#robotics</a> and <a href="https://twitter.com/hashtag/artificialintelligence?src=hash&amp;ref_src=twsrc%5Etfw">#artificialintelligence</a> systems to improve quality of life care for seniors. <a href="https://twitter.com/amazon?ref_src=twsrc%5Etfw">@Amazon</a>, <a href="https://twitter.com/Google?ref_src=twsrc%5Etfw">@Google</a> are sponsors. <a href="https://t.co/FQMFHDQuQZ">https://t.co/FQMFHDQuQZ</a> <a href="https://t.co/BKxD7jGUlm">pic.twitter.com/BKxD7jGUlm</a></p>&mdash; Communications of the ACM (@CACMmag) <a href="https://twitter.com/CACMmag/status/1451569337765085197?ref_src=twsrc%5Etfw">October 22, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <blockquote class="twitter-tweet"><p lang="en" dir="ltr">.<a href="https://twitter.com/UMassLowell?ref_src=twsrc%5Etfw">@UMassLowell</a>, <a href="https://twitter.com/GeorgiaTech?ref_src=twsrc%5Etfw">@GeorgiaTech</a>, <a href="https://twitter.com/CarnegieMellon?ref_src=twsrc%5Etfw">@CarnegieMellon</a>, <a href="https://twitter.com/OregonState?ref_src=twsrc%5Etfw">@OregonState</a>, and <a href="https://twitter.com/OHSUNews?ref_src=twsrc%5Etfw">@OHSUNews</a> researchers are part of an <a href="https://twitter.com/NSF?ref_src=twsrc%5Etfw">@NSF</a>-funded initiative to develop <a href="https://twitter.com/hashtag/robotics?src=hash&amp;ref_src=twsrc%5Etfw">#robotics</a> and <a href="https://twitter.com/hashtag/artificialintelligence?src=hash&amp;ref_src=twsrc%5Etfw">#artificialintelligence</a> systems to improve quality of life care for seniors. <a href="https://twitter.com/amazon?ref_src=twsrc%5Etfw">@Amazon</a>, <a href="https://twitter.com/Google?ref_src=twsrc%5Etfw">@Google</a> are sponsors. <a href="https://t.co/FQMFHDQuQZ">https://t.co/FQMFHDQuQZ</a> <a href="https://t.co/BKxD7jGUlm">pic.twitter.com/BKxD7jGUlm</a></p>&mdash; Communications of the ACM (@CACMmag) <a href="https://twitter.com/CACMmag/status/1451569337765085197?ref_src=twsrc%5Etfw">October 22, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
--->
 <div style="align-content: center;">
 </div>
 
 <iframe style="height:400px;float:left;margin-right:40px;width:700px;", src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQb1gAtjeYe_8Hu2EFGM-lJIjVPtM1wYQ-KBGaA8UkNJh-KFaB1YcNAD9sKQeG1nJZneuuSRAFxpPnO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
 
-<div id="twit">
-  <!--
-  {% for data in dataset %}
-  {% autoescape off %} 
-  {{data.html}}
-  {% endautoescape %}
-  {% endfor %}
-  -->
-</div>
 </body>
 </html>
