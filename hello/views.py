@@ -72,11 +72,11 @@ def start_pgsql():
     return cursor, conn
 
 def add_to_db(cursor, conn):
-
-
     users, html, dates = run()
-    
-    #cursor.execute(f"INSERT INTO hello_tweet ({num}, '{html}')")
+    size = cursor.execute("SELECT count(*) FROM hello_tweet")
+    if size == 50:
+        delete_from_db(cursor, len(users)) 
+  
     for i in html:
         cursor.execute("INSERT INTO hello_tweet (num, html) VALUES(%s, %s)", (dates[i], html[i]))
     
@@ -89,6 +89,13 @@ def get_from_db(cursor):
     data = cursor.fetchall()
 
     return data[1]
+
+def delete_from_db(cursor, num_to_delete):
+    cursor.execute(f'SELECT * from hello_tweet')
+    data = cursor.fetchall()
+
+    return data[1]
+
 
 
 
