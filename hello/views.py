@@ -93,26 +93,33 @@ def get_from_db(cursor):
 
 
 def build_account_list():
+    '''
+    Builds a list of account to extract Tweets from
+    :return: a list of tuples containing the username of the account and whether they are hashtag only 
+    '''
     account_list = []
-    # extract users from txt file
+    # Open the file containing the accounts to scrape from
     with open("./hello/accounts.csv", 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
+            # Skip the header of the CSV
             if line_count == 0:
                 line_count += 1
                 continue
             else:
                 account_list.append((row[0], row[1]))
-                # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
                 line_count += 1
 
 
     return account_list
 
-
-# Makes a request to get the html for a given Tweet URL
 def generate_html(url):
+    '''
+    Generates the HTML for a given Tweet
+    :param url: The URL for a given Tweet
+    :return: the HTML display for a given Tweets
+    '''
     query_string = urlencode({'url': url})  # 'omit_script': 1
     oembed_url = f"https://publish.twitter.com/oembed?{query_string}"
 
@@ -145,7 +152,6 @@ def run():
                                        exclude_replies=True, )
 
             for tweet in tweets:
-                # print(tweet._json['created_at'])
                 d = tweet._json['created_at'].split(' ')
                 tweet_date = datetime.datetime(year=int(d[-1]), month=int(get_month(d[1])),
                                                day=int(d[2]))  # Time, without a date
@@ -166,16 +172,10 @@ def run():
 
                     # Put in DB
                     if not isHashtagOnly or HASHTAG in hashtags:
-                        # time_created_at = time the Tweet was made
-                        # account = username of the account
-                        # html = the html to embed the Tweet
                         date = generateDate(tweet)
                         dates.append(date)
                         htmls.append(html)
                         users.append(account)
-                        # print(tweet)
-                        # print(tweet._json['created_at'])
-                        # print("----------------------------------")
 
                 else:
                     print("Not able to get Tweet for " + account)
@@ -195,6 +195,11 @@ def generateDate(status):
 
 
 def get_month(month):
+    '''
+    Converts abrevition of the month to the number of the month 
+    :param month: String abbreviation for a month
+    :return: The number of the month
+    '''
     if month == "Jan":
         month = 1
     elif month == "Feb":
