@@ -121,7 +121,7 @@ def build_account_list():
     return account_list
 
 
-def generate_html(url):
+def generate_html(url: str) -> str :
     """
     Generates the HTML for a given Tweet
     :param url: The URL for a given Tweet
@@ -138,7 +138,7 @@ def generate_html(url):
     return ""
 
 
-def run():
+def run() -> Tuple[[str], [str],[str]]:
     """
     Pulls Tweets from Twitter
     :return: a list of usernames, Tweet HTMLs, and dates for the pulled Tweets 
@@ -196,7 +196,7 @@ def run():
     return users, htmls, dates
 
 
-def generateDate(status):
+def generateDate(status:str) -> str :
     """
     Generates the date for a given Tweet requests
     :param status: the request from a Tweet
@@ -211,7 +211,7 @@ def generateDate(status):
     return date
 
 
-def get_month(month):
+def get_month(month: str) -> int:
     """
     Converts abbreviation of the month to the number of the month
     :param month: String abbreviation for a month
