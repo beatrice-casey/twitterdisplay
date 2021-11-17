@@ -23,8 +23,6 @@ ACCESS_TOKEN_SECRET = "IMwmI0nIWGMeCbdeEEJwEn3a6WnPVDaC2sfXfiHGa5ZFX"
 
 # the hashtag that needs to be included for certain accounts
 HASHTAG = "BucknellCSNews"
-# the number of tweets to pull from each user
-TWEETS_PER_USER = 10
 
 # GLOBAL VARIABLES
 auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
