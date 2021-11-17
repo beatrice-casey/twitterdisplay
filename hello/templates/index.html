@@ -52,9 +52,10 @@ function resumeDiv() {
 <h1 class="topnav", style="color:#003865"> What's Twitter saying about Bucknell Computer Science? </h1>
 
 
+
 <div class="noscroll"id="MyDivName" style="overflow:auto;width:30%;height: 500px;float: left;" onMouseOut="resumeDiv()">
 
-{% for tweet in tweets %}
+  {% for tweet in tweets %}
   {% autoescape off %} 
   {{ tweet.html }}
   {% endautoescape %}

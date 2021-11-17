@@ -73,10 +73,15 @@ WSGI_APPLICATION = "twitterdisplayapp.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
 DATABASES = {
-    "default": {
-        "ENGINE" : "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3")
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ddtqls08im6ebr',
+        'USER': 'hrkyzevdhovtsu',
+        'PASSWORD': '3a05d690de5bdcf66b0580f305a103b059ff4f5544fcde88aa193f496db11421',
+        'HOST': 'ec2-3-226-165-74.compute-1.amazonaws.com',
+        'PORT':  5432,
     }
 }
 
