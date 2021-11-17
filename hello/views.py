@@ -72,10 +72,13 @@ def start_pgsql():
     return cursor, conn
 
 def add_to_db(cursor, conn):
-    num = 2
-    html = '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Scientists have built deep neural networks that can map between infinite dimensional spaces. <a href="https://t.co/LUwfLvhEhm">https://t.co/LUwfLvhEhm</a> <a href="https://t.co/wOHgdJnWsk">pic.twitter.com/wOHgdJnWsk</a></p>&mdash; Quanta Magazine (@QuantaMagazine) <a href="https://twitter.com/QuantaMagazine/status/1460379347320197123?ref_src=twsrc%5Etfw">November 15, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-    #cursor.execute(f"INSERT INTO hello_tweet ({num}, '{html}')")
-    cursor.execute("INSERT INTO hello_tweet (num, html) VALUES(%s, %s)", (num, html))
+    users, html, dates = run()
+    size = cursor.execute("SELECT count(*) FROM hello_tweet")
+    if size == 50:
+        delete_from_db(cursor, len(users)) 
+  
+    for i in html:
+        cursor.execute("INSERT INTO hello_tweet (user, date, html) VALUES(%s, %s)", (users[i], dates[i], html[i]))
     
     conn.commit()
 
@@ -86,6 +89,13 @@ def get_from_db(cursor):
     data = cursor.fetchall()
 
     return data[1]
+
+def delete_from_db(cursor, num_to_delete):
+    cursor.execute(f'SELECT * from hello_tweet')
+    data = cursor.fetchall()
+
+    return data[1]
+
 
 
 
