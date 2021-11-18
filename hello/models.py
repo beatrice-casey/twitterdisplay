@@ -7,7 +7,7 @@ class Greeting(models.Model):
     when = models.DateTimeField("date created", auto_now_add=True)
 
 class Tweet(models.Model):
-    user = models.TextField()
+    username = models.TextField()
     html = models.TextField(help_text="This is the HTML snippet stored for each tweet")
     date = models.TextField(help_text="Day number/ month number/ year. i.e (oct 10 2021 = 1/10/2021)")
 
