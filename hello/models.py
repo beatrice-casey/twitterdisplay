@@ -14,9 +14,12 @@ class Tweet(models.Model):
     def __str__(self):
         return "Tweet"
 
+'''
 class Username(models.Model):
     handle = models.TextField(help_text="This is the twitter username of each user we pull from")
     is_hashtag_only = models.BooleanField(help_text="True if the user requires a specific hashtag to use their tweet")
 
     def __str__(self):
         return "Username"
+'''
+
