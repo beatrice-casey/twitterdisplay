@@ -13,8 +13,6 @@ window.onload = function() {
 ScrollRate = 100;
 function scrollDiv_init() {
   DivElmnt = document.getElementById('MyDivName');
-  DivElmnt.onmouseover = pauseDiv;
-  DivElmnt.onmouseout = resumeDiv;
   ReachedMaxScroll = false;
   DivElmnt.scrollTop = 0;
   PreviousScrollTop  = 0;
@@ -35,13 +33,6 @@ function scrollDiv() {
     DivElmnt.scrollTop = PreviousScrollTop;
     PreviousScrollTop--;
   }
-}
-function pauseDiv() {
-  clearInterval(ScrollInterval);
-}
-function resumeDiv() {
-  PreviousScrollTop = DivElmnt.scrollTop;
-  ScrollInterval = setInterval('scrollDiv()', ScrollRate);
 }
 </script>
 </head>
@@ -66,7 +57,7 @@ function resumeDiv() {
 <div style="align-content: center;">
 </div>
 
-<iframe style="height:400px;float:left;margin-right:40px;width:700px;", src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQb1gAtjeYe_8Hu2EFGM-lJIjVPtM1wYQ-KBGaA8UkNJh-KFaB1YcNAD9sKQeG1nJZneuuSRAFxpPnO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+<iframe style="height:400px;float:right;margin-right:40px;width:700px;", src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQb1gAtjeYe_8Hu2EFGM-lJIjVPtM1wYQ-KBGaA8UkNJh-KFaB1YcNAD9sKQeG1nJZneuuSRAFxpPnO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
 
 </body>
 </html>
