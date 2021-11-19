@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
-from hello.models import Tweet
+from hello.models import Tweet, Username
 import schedule
 import time
 import csv
