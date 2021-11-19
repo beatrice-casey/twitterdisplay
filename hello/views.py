@@ -93,7 +93,7 @@ def get_from_db(cursor):
 def delete_from_db(cursor, num_to_delete):
 
     for i in range(num_to_delete):
-        cursor.execute('DELETE FROM hello_tweet WHERE id = (row_to_delete) VALUES(%s)', (50-i))
+        cursor.execute('DELETE FROM hello_tweet WHERE id = (row_to_delete) VALUES(%s)', (i))
 
 
 
