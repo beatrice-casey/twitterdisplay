@@ -141,7 +141,6 @@ def run() -> Tuple[[str], [str],[str]]:
     Pulls Tweets from Twitter
     :return: a list of usernames, Tweet HTMLs, and dates for the pulled Tweets 
     """
-    # build the list of users to extract
     account_list = build_account_list()
     dates = []
     users = []
@@ -158,19 +157,19 @@ def run() -> Tuple[[str], [str],[str]]:
             print("Getting data for " + account)
             # get the tweets
             tweets = api.user_timeline(screen_name=account, trim_user=True,
-                                       exclude_replies=True, )
+                                   exclude_replies=True, )
 
             for tweet in tweets:
                 d = tweet._json['created_at'].split(' ')
                 tweet_date = datetime.datetime(year=int(d[-1]), month=int(get_month(d[1])),
-                                               day=int(d[2]))  # Time, without a date
+                                           day=int(d[2]))  # Time, without a date
 
                 # keep looping until encounter tweet with date past 1 day ago (since last update)
                 if tweet_date < prev_date:
                     break
 
                 # obtain the tweet url from the json request
-                # noinspection PyProtectedMember
+
                 url = "https://twitter.com/" + account + "/status/" + tweet._json['id_str']
                 html = generate_html(url)
 
@@ -182,19 +181,33 @@ def run() -> Tuple[[str], [str],[str]]:
 
                     # Put in DB
                     if not isHashtagOnly or HASHTAG in hashtags:
-                        date = generateDate(tweet)
-                        print(date)
-                        dates.append(date)
-                        htmls.append(html)
-                        users.append(account)
+
+                        # date = generateDate(tweet)
+                        time = tweet._json['created_at'].split(' ')
+                        month = time[1]
+                        day = time[2]
+                        year = time[-1]
+                        date = datetime.datetime(month=get_month(month), day=int(day), year=int(year))
+
+                        # find the spot in the list to put the new Tweet
+                        index = 0
+                        while index < len(dates):
+                            if dates[index] < date:
+                                break
+                            index += 1
+
+                        htmls.insert(index, html)
+                        dates.insert(index, date)
+                        users.insert(index, account)
 
                 else:
                     print("Not able to get Tweet for " + account)
         except:
             continue
 
-    
-    return sort_tweets(users, htmls, dates)
+    for index in range(len(dates)):
+        dates[index] = str(dates[index])
+    return users, htmls, dates
 
 
 
