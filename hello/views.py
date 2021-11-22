@@ -183,6 +183,7 @@ def run() -> Tuple[[str], [str],[str]]:
                     # Put in DB
                     if not isHashtagOnly or HASHTAG in hashtags:
                         date = generateDate(tweet)
+                        print(date)
                         dates.append(date)
                         htmls.append(html)
                         users.append(account)
@@ -191,7 +192,11 @@ def run() -> Tuple[[str], [str],[str]]:
                     print("Not able to get Tweet for " + account)
         except:
             continue
-    return users, htmls, dates
+
+    
+    return sort_tweets(users, htmls, dates)
+
+
 
 
 def generateDate(status:str) -> str :
