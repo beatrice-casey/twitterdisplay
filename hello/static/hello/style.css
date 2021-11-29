@@ -29,3 +29,8 @@ h1 banner {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+.cellContainer {
+    width: 45%;
+    float: left;
+  }
