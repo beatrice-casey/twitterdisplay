@@ -87,7 +87,7 @@ def add_to_db(cursor, conn):
         delete_from_db(cursor, len(usernames)) 
   
     for i in range(len(html)):
-        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[i], dates[i], html[i]))
+        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[50-i], dates[50-i], html[50-i]))
     
 
     conn.commit()
