@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from tweepy import API, OAuthHandler
-from hello.models import Tweet, Username
+from hello.models import Tweet
 import schedule
 import time
 import csv
@@ -30,7 +30,6 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 cursor = None
-conn = None
 
 
 def index(request):
@@ -39,7 +38,7 @@ def index(request):
     :param request: the request being made
     :return: the rendered HTML template
     """
-    global cursor,conn
+    global cursor
     
     if cursor is None:
         cursor, conn = start_pgsql()
@@ -75,7 +74,7 @@ def start_pgsql():
         port=port
     )
 
-    db_cursor = conn.cursor()
+    db_cursor = db_conn.cursor()
     return db_cursor, db_conn
 
 
@@ -87,7 +86,7 @@ def add_to_db(cursor, conn):
         delete_from_db(cursor, len(usernames)) 
   
     for i in range(len(html)):
-        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[50-i], dates[50-i], html[50-i]))
+        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[i], dates[i], html[i]))
     
 
     conn.commit()
@@ -104,7 +103,7 @@ def get_from_db(cursor):
 def delete_from_db(cursor, num_to_delete):
 
     for i in range(num_to_delete):
-        cursor.execute('DELETE FROM hello_tweet WHERE id = (row_to_delete) VALUES(%s)', (i))
+        cursor.execute('DELETE FROM hello_tweet WHERE id = (row_to_delete) VALUES(%s)', (50-i))
 
 
 
@@ -148,7 +147,7 @@ def generate_html(url: str) -> str :
     return ""
 
 
-def run() -> Tuple[[str], [str],[str]]:
+def run():
     """
     Pulls Tweets from Twitter
     :return: a list of usernames, Tweet HTMLs, and dates for the pulled Tweets 
