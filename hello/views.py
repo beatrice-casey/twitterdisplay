@@ -14,8 +14,6 @@ import datetime
 import psycopg2
 import os
 
-
-
 # CONSTANTS
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAEPxTgEAAAAAqnem0D0Cf8c1zRJ1AgKrN6wiHRI%3DfHNJuInuMppQGzaicMdr4ds7hfOlHNySVwrdrNRvECFMm6bFE1'
 CONSUMER_KEY = "dFGI5f6OBN0QfprVQZmBhA40r"
@@ -25,8 +23,6 @@ ACCESS_TOKEN_SECRET = "IMwmI0nIWGMeCbdeEEJwEn3a6WnPVDaC2sfXfiHGa5ZFX"
 
 # the hashtag that needs to be included for certain accounts
 HASHTAG = "BucknellCSNews"
-# the number of tweets to pull from each user
-TWEETS_PER_USER = 10
 
 # GLOBAL VARIABLES
 auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -34,55 +30,70 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 cursor = None
+conn = None
+
 
 def index(request):
-    # return HttpResponse('Hello from Python!')
-    cursor = None
-    if cursor == None:
-        cursor, conn = start_pgsql()
+    """
+    Renders the HTML format to update the web page
+    :param request: the request being made
+    :return: the rendered HTML template
+    """
+    global cursor,conn
     
+    if cursor is None:
+        cursor, conn = start_pgsql()
+
     add_to_db(cursor, conn)
 
     # get data from pgsql
     tweets = Tweet.objects.all()
 
-    #html = get_from_db(cursor)
+    # html = get_from_db(cursor)
     # TODO HAS to be a dictionary
 
     return render(request, "index.html", {'tweets': tweets})
 
+
 def start_pgsql():
-    
-    enginge =  'django.db.backends.postgresql_psycopg2'
+    """
+    Creates a connection to the Postgres DB
+    :return: the cursor and connection to the Postgres DB 
+    """
+    enginge = 'django.db.backends.postgresql_psycopg2'
     name = 'ddtqls08im6ebr'
     user = 'hrkyzevdhovtsu'
     password = '3a05d690de5bdcf66b0580f305a103b059ff4f5544fcde88aa193f496db11421'
     host = 'ec2-3-226-165-74.compute-1.amazonaws.com'
     port = 5432
 
-    conn = psycopg2.connect(
-            dbname=name,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-            )
-    
-    cursor = conn.cursor()
-    return cursor, conn
+    db_conn = psycopg2.connect(
+        dbname=name,
+        user=user,
+        password=password,
+        host=host,
+        port=port
+    )
+
+    db_cursor = conn.cursor()
+    return db_cursor, db_conn
+
 
 def add_to_db(cursor, conn):
+
     usernames, html, dates = run()
     size = cursor.execute("SELECT count(*) FROM hello_tweet")
     if size == 50:
         delete_from_db(cursor, len(usernames)) 
   
     for i in range(len(html)):
-        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[i], dates[i], html[i]))
+        cursor.execute("INSERT INTO hello_tweet (username, date, html) VALUES(%s, %s, %s)", (usernames[50-i], dates[50-i], html[50-i]))
     
+
     conn.commit()
 
-    #cursor.fetchall()
+    # cursor.fetchall()
+
 
 def get_from_db(cursor):
     cursor.execute(f'SELECT * from hello_tweet')
@@ -98,31 +109,34 @@ def delete_from_db(cursor, num_to_delete):
 
 
 
-
-
-
-
 def build_account_list():
+    """
+    Builds a list of account to extract Tweets from
+    :return: a list of tuples containing the username of the account and whether they are hashtag only
+    """
     account_list = []
-    # extract users from txt file
+    # Open the file containing the accounts to scrape from
     with open("./hello/accounts.csv", 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
+            # Skip the header of the CSV
             if line_count == 0:
                 line_count += 1
                 continue
             else:
                 account_list.append((row[0], row[1]))
-                # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
                 line_count += 1
-
 
     return account_list
 
 
-# Makes a request to get the html for a given Tweet URL
-def generate_html(url):
+def generate_html(url: str) -> str :
+    """
+    Generates the HTML for a given Tweet
+    :param url: The URL for a given Tweet
+    :return: the HTML display for a given Tweets
+    """
     query_string = urlencode({'url': url})  # 'omit_script': 1
     oembed_url = f"https://publish.twitter.com/oembed?{query_string}"
 
@@ -134,8 +148,11 @@ def generate_html(url):
     return ""
 
 
-def run():
-    # build the list of users to extract
+def run() -> Tuple[[str], [str],[str]]:
+    """
+    Pulls Tweets from Twitter
+    :return: a list of usernames, Tweet HTMLs, and dates for the pulled Tweets 
+    """
     account_list = build_account_list()
     dates = []
     users = []
@@ -152,19 +169,19 @@ def run():
             print("Getting data for " + account)
             # get the tweets
             tweets = api.user_timeline(screen_name=account, trim_user=True,
-                                       exclude_replies=True, )
+                                   exclude_replies=True, )
 
             for tweet in tweets:
-                # print(tweet._json['created_at'])
                 d = tweet._json['created_at'].split(' ')
                 tweet_date = datetime.datetime(year=int(d[-1]), month=int(get_month(d[1])),
-                                               day=int(d[2]))  # Time, without a date
+                                           day=int(d[2]))  # Time, without a date
 
                 # keep looping until encounter tweet with date past 1 day ago (since last update)
                 if tweet_date < prev_date:
                     break
 
                 # obtain the tweet url from the json request
+
                 url = "https://twitter.com/" + account + "/status/" + tweet._json['id_str']
                 html = generate_html(url)
 
@@ -176,25 +193,43 @@ def run():
 
                     # Put in DB
                     if not isHashtagOnly or HASHTAG in hashtags:
-                        # time_created_at = time the Tweet was made
-                        # account = username of the account
-                        # html = the html to embed the Tweet
-                        date = generateDate(tweet)
-                        dates.append(date)
-                        htmls.append(html)
-                        users.append(account)
-                        # print(tweet)
-                        # print(tweet._json['created_at'])
-                        # print("----------------------------------")
+
+                        # date = generateDate(tweet)
+                        time = tweet._json['created_at'].split(' ')
+                        month = time[1]
+                        day = time[2]
+                        year = time[-1]
+                        date = datetime.datetime(month=get_month(month), day=int(day), year=int(year))
+
+                        # find the spot in the list to put the new Tweet
+                        index = 0
+                        while index < len(dates):
+                            if dates[index] < date:
+                                break
+                            index += 1
+
+                        htmls.insert(index, html)
+                        dates.insert(index, date)
+                        users.insert(index, account)
 
                 else:
                     print("Not able to get Tweet for " + account)
         except:
             continue
+
+    for index in range(len(dates)):
+        dates[index] = str(dates[index])
     return users, htmls, dates
 
 
-def generateDate(status):
+
+
+def generateDate(status:str) -> str :
+    """
+    Generates the date for a given Tweet requests
+    :param status: the request from a Tweet
+    :return: the date of the Tweet as a String in day/month/year format
+    """
     time_created_at = (status._json['created_at']).split(" ")
     month = time_created_at[1]
     day = time_created_at[2]
@@ -204,7 +239,12 @@ def generateDate(status):
     return date
 
 
-def get_month(month):
+def get_month(month: str) -> int:
+    """
+    Converts abbreviation of the month to the number of the month
+    :param month: String abbreviation for a month
+    :return: The number of the month
+    """
     if month == "Jan":
         month = 1
     elif month == "Feb":
@@ -230,5 +270,3 @@ def get_month(month):
     elif month == "Dec":
         month = 12
     return month
-
-
