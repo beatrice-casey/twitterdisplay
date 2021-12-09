@@ -41,6 +41,7 @@ h1 banner {
     scrollbar-width: none;  /* Firefox */
 }
 body{
+    height: 100%;
     background: linear-gradient(0deg, #66B2FF, #003865);
 }
 .cellContainer {
