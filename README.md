@@ -10,7 +10,7 @@ The webpage can be viewed on the screen behind the CS student space on the 3rd f
 
 
 ## Tweet Collection
-The project utilizes the [Tweepy API](https://github.com/tweepy/tweepy) to extract Tweets from Twitter and then generate HTML representations of the Tweets. This information is stored on a Postgres Database and displayed on Heroku using the Django framework. The Tweets are pulled every 24 hours and the program only collects Tweets that have been published since the last pull. 
+The project utilizes the [Tweepy API](https://github.com/tweepy/tweepy) to extract Tweets from Twitter and then generate HTML representations of the Tweets. This information is stored on a Postgres Database and displayed on Heroku using the Django framework. The Tweets are pulled every 24 hours and the program only collects Tweets that have been published since the last pull. The web page automatically refreshes every 24hrs via a [chrome extension](https://chrome.google.com/webstore/detail/page-refresh/hmooaemjmediafeacjplpbpenjnpcneg?hl=en). This triggers the pulling of new Tweets and the refresh of the front ennd. 
 
 
 
