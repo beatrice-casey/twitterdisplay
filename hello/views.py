@@ -30,7 +30,6 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 cursor = None
-conn = None
 
 
 def index(request):
@@ -39,7 +38,7 @@ def index(request):
     :param request: the request being made
     :return: the rendered HTML template
     """
-    global cursor,conn
+    global cursor
     
     if cursor is None:
         cursor, conn = start_pgsql()
@@ -75,7 +74,7 @@ def start_pgsql():
         port=port
     )
 
-    db_cursor = conn.cursor()
+    db_cursor = db_conn.cursor()
     return db_cursor, db_conn
 
 
