@@ -30,6 +30,7 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 cursor = None
+conn = None
 
 
 def index(request):
@@ -38,10 +39,10 @@ def index(request):
     :param request: the request being made
     :return: the rendered HTML template
     """
-    global cursor
+    #global cursor
     
-    if cursor is None:
-        cursor, conn = start_pgsql()
+    #if cursor is None:
+    cursor, conn = start_pgsql()
 
     add_to_db(cursor, conn)
 
