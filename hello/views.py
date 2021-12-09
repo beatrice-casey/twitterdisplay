@@ -148,7 +148,7 @@ def generate_html(url: str) -> str :
     return ""
 
 
-def run() -> Tuple[[str], [str],[str]]:
+def run():
     """
     Pulls Tweets from Twitter
     :return: a list of usernames, Tweet HTMLs, and dates for the pulled Tweets 
