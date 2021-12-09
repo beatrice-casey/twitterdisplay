@@ -2,7 +2,7 @@
 
 For our CSCI479 senior design culminating project, we are creating a webpage that will display Tweets to the computer science community at Bucknell. Certain professors who wish to have certain Tweets shown will be displayed on the board if they use a hashtag, and other accounts such as ACM, ACM-W, and IEEE will be displayed. The website features a slow automatic scroll and automatically pulls new Tweets everyday. In addition to the scrolling Twitter feed, the webpage also has a notification board. The board is updated as users fill out a Google Form with specific Bucknell related events or notifications.   
 
-INSERT IMAGE OF WEBPAGE  
+![Screen Shot 2021-12-09 at 5 47 38 PM](https://user-images.githubusercontent.com/44034523/145487984-e937b249-fa27-4f75-b642-b1e79140c9b6.jpeg) 
  
 
 
